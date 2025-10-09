@@ -43,11 +43,7 @@ alias lt3="eza -lTg --level=3 --icons"
 alias lta="eza -lTag --icons"
 alias lta1="eza -lTag --level=1 --icons"
 alias lta2="eza -lTag --level=2 --icons"
-alias lta3="eza -lTag --level=3 --icons"eval "$(gh copilot alias -- zsh)"
-eval "$(gh copilot alias -- zsh)"
-eval "$(gh copilot alias -- zsh)"
-
-[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
+alias lta3="eza -lTag --level=3 --icons"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!

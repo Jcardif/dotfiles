@@ -32,7 +32,34 @@ dotfiles/
 
 This repository uses [GNU Stow](https://www.gnu.org/software/stow/) for managing symlinks.
 
-### Prerequisites
+### Quick Install (Recommended)
+
+Clone this repository and run the installation script:
+
+```bash
+git clone https://github.com/Jcardif/dotfiles.git
+cd dotfiles
+chmod +x install.sh
+./install.sh
+```
+
+The installation script will:
+- Install required Nerd Fonts (Meslo LG, JetBrains Mono, SF Pro)
+- Install WezTerm terminal emulator
+- Install Powerlevel10k theme
+- Install Zsh plugins (autosuggestions, syntax-highlighting)
+- Install modern CLI tools (eza, zoxide)
+- Install GNU Stow for symlink management
+- Install Aerospace window manager
+- Install SketchyBar status bar
+- Install Janky Borders (borders.app)
+- Create symlinks to your home directory
+
+### Manual Installation
+
+If you prefer to install components manually:
+
+#### Prerequisites
 
 Install GNU Stow:
 
@@ -41,7 +68,7 @@ Install GNU Stow:
 brew install stow
 ```
 
-### Setup
+#### Setup
 
 1. Clone this repository (anywhere you like, e.g., `~/source/repos/`):
 
@@ -50,11 +77,13 @@ brew install stow
    cd dotfiles
    ```
 
-2. Use Stow to create symlinks to your home directory:
+2. Install the required packages (see the `install.sh` script for the complete list)
+
+3. Use Stow to create symlinks to your home directory:
 
    ```bash
    # Install all configurations
-   stow -vt ~ .
+   stow -vt ~ aerospace jankyborders sketchybar wezterm zsh
    ```
 
    ```bash
@@ -88,5 +117,5 @@ stow -Dvt ~ wezterm
 stow -Dvt ~ zsh
 
 # Or uninstall all packages at once
-stow -Dvt ~ */
+stow -Dvt ~ aerospace jankyborders sketchybar wezterm zsh
 ```
