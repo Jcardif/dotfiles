@@ -45,9 +45,9 @@ source "$ITEM_DIR/spacer"
 source "$ITEM_DIR/front_app"
 
 # Right Items
-source "$ITEM_DIR/clock"
-source "$ITEM_DIR/volume"
-source "$ITEM_DIR/battery"
+# source "$ITEM_DIR/clock"
+# source "$ITEM_DIR/volume"
+# source "$ITEM_DIR/battery"
 
 # Automatically apply configuration changes
 sketchybar --hotload on
