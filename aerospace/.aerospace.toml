@@ -64,7 +64,7 @@ preset = 'qwerty'
 outer.top = [
     # offset of 32 on internal display, because of notch (16" MPB)
     { monitor.'built-in.*' = 6 },
-    38,
+    8,
 ]
 outer.right = 8
 outer.bottom = 8
