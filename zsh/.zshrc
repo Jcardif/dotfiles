@@ -59,3 +59,5 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+# Added by get-aspire-cli.sh
+export PATH="$HOME/.aspire/bin:$PATH"
