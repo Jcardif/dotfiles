@@ -55,6 +55,13 @@ The installation script will:
 - Install SketchyBar status bar
 - Install Janky Borders (borders.app)
 - Install Maccy clipboard manager
+- Install GitHub CLI (gh)
+- Install GitHub Copilot CLI
+- Install Codex CLI
+- Install Claude Code
+- Install Aspire CLI
+- Install dotnet-ef global tool (if dotnet is installed)
+- Install Rust (via rustup)
 - Create symlinks to your home directory
 
 ### Manual Installation

@@ -56,6 +56,39 @@ brew install borders
 echo "📦 Installing Maccy clipboard manager..."
 brew install maccy
 
+# Install GitHub CLI
+echo "📦 Installing GitHub CLI..."
+brew install gh
+
+# Install GitHub Copilot CLI
+echo "📦 Installing GitHub Copilot CLI..."
+brew install copilot-cli
+
+# Install Codex CLI
+echo "📦 Installing Codex CLI..."
+brew install codex
+
+# Install Claude Code
+echo "📦 Installing Claude Code..."
+curl -fsSL https://claude.ai/install.sh | bash
+
+# Install Aspire CLI
+echo "📦 Installing Aspire CLI..."
+curl -sSL https://aspire.dev/install.sh | bash
+
+# Install dotnet-ef global tool (requires dotnet to be installed first)
+echo "📦 Installing dotnet-ef global tool..."
+if command -v dotnet &> /dev/null; then
+    dotnet tool install --global dotnet-ef
+else
+    echo "⚠️  Warning: dotnet is not installed. Skipping dotnet-ef installation."
+    echo "   Please install dotnet first, then run: dotnet tool install --global dotnet-ef"
+fi
+
+# Install Rust
+echo "📦 Installing Rust..."
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
 # Create the symlinks
 echo "🔗 Creating symlinks with stow..."
 stow -vt ~ aerospace jankyborders sketchybar wezterm zsh
