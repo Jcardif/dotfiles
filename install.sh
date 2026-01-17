@@ -85,6 +85,10 @@ else
     echo "   Please install dotnet first, then run: dotnet tool install --global dotnet-ef"
 fi
 
+# Install Rust
+echo "📦 Installing Rust..."
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
 # Create the symlinks
 echo "🔗 Creating symlinks with stow..."
 stow -vt ~ aerospace jankyborders sketchybar wezterm zsh
