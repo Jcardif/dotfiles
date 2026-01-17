@@ -61,3 +61,4 @@ unset __conda_setup
 # <<< conda initialize <<<
 # Added by get-aspire-cli.sh
 export PATH="$HOME/.aspire/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
