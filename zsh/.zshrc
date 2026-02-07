@@ -62,3 +62,4 @@ unset __conda_setup
 # Added by get-aspire-cli.sh
 export PATH="$HOME/.aspire/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
+eval "$(/opt/homebrew/bin/brew shellenv)"
