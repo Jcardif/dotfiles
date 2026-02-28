@@ -39,6 +39,22 @@ brew install zoxide
 echo "📦 Installing stow..."
 brew install stow
 
+# Install uv (Astral)
+echo "📦 Installing uv..."
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Ensure uv is available in this shell session
+export PATH="$HOME/.local/bin:$PATH"
+
+# Install latest Python and expose default python/python3 executables
+echo "📦 Installing default Python with uv..."
+if command -v uv &> /dev/null; then
+    uv python install --default
+else
+    echo "⚠️  Warning: uv was not found on PATH after installation. Skipping Python installation."
+    echo "   Please ensure ~/.local/bin is on your PATH, then run: uv python install --default"
+fi
+
 # Install aerospace
 echo "📦 Installing aerospace..."
 brew install --cask nikitabobko/tap/aerospace
