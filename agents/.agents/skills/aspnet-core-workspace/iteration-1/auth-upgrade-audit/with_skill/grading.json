@@ -1,0 +1,41 @@
+{
+  "expectations": [
+    {
+      "text": "The response covers cookies, OIDC, passkeys, and CORS as distinct review areas.",
+      "passed": true,
+      "evidence": "The response has separate sections titled `Cookies`, `OIDC`, `Passkeys`, and `CORS`."
+    },
+    {
+      "text": "The response mentions that built-in .NET 10 passkeys are scoped and have limitations, including primary-factor behavior.",
+      "passed": true,
+      "evidence": "The response states that built-in passkeys are scoped to ASP.NET Core Identity and \"treated as a primary authentication factor, not built-in 2FA.\""
+    },
+    {
+      "text": "The response frames the task as a security and upgrade audit rather than a blind rewrite.",
+      "passed": true,
+      "evidence": "The response says \"This should be treated as a security and upgrade audit, not a rewrite.\""
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1.0
+  },
+  "execution_metrics": {},
+  "timing": {},
+  "claims": [],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "reason": "The baseline run also passes all expectations. Add assertions around Identity-scoped passkey limitations, alternative-library decision guidance, or .NET 10 cookie behavior changes to make this more discriminating."
+      }
+    ],
+    "overall": "The with-skill answer is strong, but the eval is still too forgiving."
+  }
+}

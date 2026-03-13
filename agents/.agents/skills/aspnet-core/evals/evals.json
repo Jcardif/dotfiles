@@ -1,0 +1,60 @@
+{
+  "skill_name": "aspnet-core",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review this ASP.NET Core API and add missing XML documentation comments for the public and reusable APIs without adding useless boilerplate comments.",
+      "expected_output": "The skill should trigger on a documentation-focused task, load the C# reference, and produce useful XML docs rather than generic comment spam.",
+      "files": [],
+      "expectations": [
+        "The response treats XML documentation as part of the API contract.",
+        "The response recommends documenting public or reusable APIs, not every trivial member indiscriminately.",
+        "The response mentions useful XML documentation elements such as summary, param, returns, exception, remarks, or inheritdoc."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "This .NET 10 API still uses older C# syntax and manual backing fields. Modernize the code to idiomatic C# 14 where it clearly improves readability.",
+      "expected_output": "The skill should recommend and use appropriate C# 14 features, prefer C# 14 as the default baseline, and avoid churn where the newer syntax adds no value.",
+      "files": [],
+      "expectations": [
+        "The response recommends C# 14 as the default baseline for a supported .NET 10 project.",
+        "The response mentions at least one relevant C# 14 feature such as field-backed properties, null-conditional assignment, nameof for unbound generics, or extension blocks.",
+        "The response avoids blanket churn and distinguishes useful modernization from pointless syntax changes."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "This repo uses FastEndpoints. Add a new Orders feature following the existing vertical-slice structure without converting anything to controllers.",
+      "expected_output": "The skill should load the FastEndpoints reference, preserve vertical slices, keep request/response/validator/endpoint concerns cohesive, and avoid introducing fake MVC-era layers.",
+      "files": [],
+      "expectations": [
+        "The response explicitly preserves vertical slices or feature-based organization.",
+        "The response keeps FastEndpoints concepts such as request, response, endpoint, and validator together.",
+        "The response does not recommend converting the feature to controllers or introducing unnecessary horizontal layers."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Audit this ASP.NET Core auth setup after a .NET 10 upgrade. Check cookies, OIDC, passkeys, CORS, and whether the current config has security regressions.",
+      "expected_output": "The skill should load the auth and upgrade references, focus on security and compatibility, and call out built-in passkey limitations when relevant.",
+      "files": [],
+      "expectations": [
+        "The response covers cookies, OIDC, passkeys, and CORS as distinct review areas.",
+        "The response mentions that built-in .NET 10 passkeys are scoped and have limitations, including primary-factor behavior.",
+        "The response frames the task as a security and upgrade audit rather than a blind rewrite."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "The application is intermittently hanging under load. Review the async code, DI lifetimes, background work, and test strategy, then propose concrete fixes.",
+      "expected_output": "The skill should load testing/performance guidance instead of overloading the C# reference, identify sync-over-async and DI lifetime issues, and recommend test improvements grounded in real behavior.",
+      "files": [],
+      "expectations": [
+        "The response identifies async and concurrency risks such as sync-over-async, dropped tasks, or uncontrolled background work.",
+        "The response identifies DI lifetime risks such as scoped services captured by singletons or mutable singleton state.",
+        "The response includes test recommendations tied to real behavior rather than mock-heavy abstractions."
+      ]
+    }
+  ]
+}

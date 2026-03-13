@@ -1,0 +1,41 @@
+{
+  "expectations": [
+    {
+      "text": "The response treats XML documentation as part of the API contract.",
+      "passed": true,
+      "evidence": "The response says it would add XML comments only to public and reusable APIs \"whose contract is not already obvious.\""
+    },
+    {
+      "text": "The response recommends documenting public or reusable APIs, not every trivial member indiscriminately.",
+      "passed": true,
+      "evidence": "The response says it would \"add XML comments only to public and reusable APIs\" and \"leave trivial members alone when comments would add no value.\""
+    },
+    {
+      "text": "The response mentions useful XML documentation elements such as summary, param, returns, exception, remarks, or inheritdoc.",
+      "passed": false,
+      "evidence": "The response talks about parameters, return values, and exceptions in plain language, but it does not name XML documentation elements such as `<summary>`, `<param>`, `<returns>`, `<exception>`, `<remarks>`, or `<inheritdoc/>`."
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "failed": 1,
+    "total": 3,
+    "pass_rate": 0.67
+  },
+  "execution_metrics": {},
+  "timing": {},
+  "claims": [],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "reason": "The eval distinguishes the skill somewhat, but it still allows a generic refusal response to pass most expectations. A concrete API sample would make the difference more meaningful."
+      }
+    ],
+    "overall": "This eval is mildly discriminating, not strongly discriminating."
+  }
+}

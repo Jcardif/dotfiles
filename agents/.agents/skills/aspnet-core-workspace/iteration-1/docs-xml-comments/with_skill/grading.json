@@ -1,0 +1,41 @@
+{
+  "expectations": [
+    {
+      "text": "The response treats XML documentation as part of the API contract.",
+      "passed": true,
+      "evidence": "The response says it will add XML documentation \"only where it improves the contract\" and frames the review around contract quality rather than comment volume."
+    },
+    {
+      "text": "The response recommends documenting public or reusable APIs, not every trivial member indiscriminately.",
+      "passed": true,
+      "evidence": "The response scopes documentation to \"Public controllers, endpoints, middleware, filters, and reusable extension methods\" and says to \"Skip boilerplate comments on trivial members.\""
+    },
+    {
+      "text": "The response mentions useful XML documentation elements such as summary, param, returns, exception, remarks, or inheritdoc.",
+      "passed": true,
+      "evidence": "The response explicitly mentions `<summary>`, `<param>`, `<returns>`, `<exception>`, `<remarks>`, `<example>`, and `<inheritdoc/>`."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1.0
+  },
+  "execution_metrics": {},
+  "timing": {},
+  "claims": [],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "reason": "This eval still lacks source files, so both runs can partially satisfy the prompt by refusing to hallucinate. Adding a small C# sample would make the result more discriminating."
+      }
+    ],
+    "overall": "The with-skill output meets the expectations cleanly, but the eval would be stronger with real input code."
+  }
+}

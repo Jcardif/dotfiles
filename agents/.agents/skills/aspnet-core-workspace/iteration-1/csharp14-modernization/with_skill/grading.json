@@ -1,0 +1,41 @@
+{
+  "expectations": [
+    {
+      "text": "The response recommends C# 14 as the default baseline for a supported .NET 10 project.",
+      "passed": true,
+      "evidence": "The response says \"Make C# 14 the baseline\" and \"If the project is already on .NET 10, strongly prefer C# 14 as the default language version.\""
+    },
+    {
+      "text": "The response mentions at least one relevant C# 14 feature such as field-backed properties, null-conditional assignment, nameof for unbound generics, or extension blocks.",
+      "passed": true,
+      "evidence": "The response explicitly recommends `field`, null-conditional assignment, and extension blocks."
+    },
+    {
+      "text": "The response avoids blanket churn and distinguishes useful modernization from pointless syntax changes.",
+      "passed": true,
+      "evidence": "The response says \"The right move is not rewrite everything because new shiny\" and includes a section titled \"What I would not churn just for modernization.\""
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1.0
+  },
+  "execution_metrics": {},
+  "timing": {},
+  "claims": [],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "reason": "The baseline run also passes these expectations. Add checks for skill-specific guidance such as default-upgrade pressure, extension blocks as grouped extensions, or avoiding churn for niche C# 14 features."
+      }
+    ],
+    "overall": "The output is good, but this eval is not discriminating enough to prove the skill improved the result."
+  }
+}

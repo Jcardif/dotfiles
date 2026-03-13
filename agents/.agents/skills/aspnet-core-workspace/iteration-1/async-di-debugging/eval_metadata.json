@@ -1,0 +1,10 @@
+{
+  "eval_id": 5,
+  "eval_name": "async-di-debugging",
+  "prompt": "The application is intermittently hanging under load. Review the async code, DI lifetimes, background work, and test strategy, then propose concrete fixes.",
+  "assertions": [
+    "The response identifies async and concurrency risks such as sync-over-async, dropped tasks, or uncontrolled background work.",
+    "The response identifies DI lifetime risks such as scoped services captured by singletons or mutable singleton state.",
+    "The response includes test recommendations tied to real behavior rather than mock-heavy abstractions."
+  ]
+}
