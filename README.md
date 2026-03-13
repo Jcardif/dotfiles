@@ -6,8 +6,11 @@ Personal configuration files for my development environment.
 
 This repository contains configuration files for:
 
+- **Codex** - Shared agent instructions installed to `~/.codex/AGENTS.md`
+- **Agents** - Shared agent skills installed to `~/.agents/skills`
 - **WezTerm** – Terminal emulator configuration
 - **Zsh** – Shell configuration and customizations
+- **Claude Code** - Shared agent skills installed to `~/.claude/skills`
 - **Aerospace** – Window manager workspace definitions
 - **SketchyBar** – macOS status bar, items, and themes
 - **JankyBorders** – Window border styling via borders.app
@@ -17,8 +20,15 @@ This repository contains configuration files for:
 
 ```text
 dotfiles/
+├── agents/
+│   └── .agents/skills/                    # Shared agent skills
 ├── aerospace/
 │   └── .aerospace.toml                     # Aerospace workspace configuration
+├── claude/
+│   └── .claude/skills -> ../../agents/.agents/skills
+│                                          # Claude Code shares the same skills
+├── codex/
+│   └── .codex/AGENTS.md                    # Shared Codex agent instructions
 ├── jankyborders/
 │   └── .config/borders/bordersrc           # Borders.app theme
 ├── sketchybar/
@@ -45,6 +55,7 @@ chmod +x install.sh
 ```
 
 The installation script will:
+
 - Install required Nerd Fonts (Meslo LG, JetBrains Mono, SF Pro)
 - Install WezTerm terminal emulator
 - Install Powerlevel10k theme
@@ -92,12 +103,15 @@ brew install stow
 
    ```bash
    # Install all configurations
-   stow -vt ~ aerospace jankyborders sketchybar wezterm zsh
+   stow -vt ~ agents aerospace claude codex jankyborders sketchybar wezterm zsh
    ```
 
    ```bash
    # Or install specific configurations
+   stow -vt ~ agents
    stow -vt ~ aerospace
+   stow -vt ~ claude
+   stow -vt ~ codex
    stow -vt ~ jankyborders
    stow -vt ~ sketchybar
    stow -vt ~ wezterm
@@ -107,7 +121,14 @@ brew install stow
    - `-t ~` = target is your home folder (where symlinks will be created)
    - `-v` = verbose output so you can see what's happening
 
-3. Restart your terminal or source the configurations:
+   If `~/.agents/skills` or `~/.claude/skills` already exist as regular
+   directories or files, move or remove them before running `stow` so it does
+   not fail with conflicts.
+
+   If `~/.codex/AGENTS.md` already exists as a regular file, move or remove it
+   before running `stow` so the `codex` package can create the symlink cleanly.
+
+4. Restart your terminal or source the configurations:
 
    ```bash
    source ~/.zshrc
@@ -120,11 +141,14 @@ To remove symlinks created by Stow:
 ```bash
 cd /path/to/dotfiles
 stow -Dvt ~ aerospace
+stow -Dvt ~ agents
+stow -Dvt ~ claude
+stow -Dvt ~ codex
 stow -Dvt ~ jankyborders
 stow -Dvt ~ sketchybar
 stow -Dvt ~ wezterm
 stow -Dvt ~ zsh
 
 # Or uninstall all packages at once
-stow -Dvt ~ aerospace jankyborders sketchybar wezterm zsh
+stow -Dvt ~ agents aerospace claude codex jankyborders sketchybar wezterm zsh
 ```
