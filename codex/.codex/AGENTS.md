@@ -29,6 +29,7 @@
 
 ### Testing, Performance, And Documentation
 
+- Use the Context7 skill to fetch relevant documentation, if documentation is not available in Context7, then search the web for official docs, reputable blogs, or papers on the topic.
 - Add or update tests when the change deserves them, using the framework already present in the repo.
 - Prefer targeted tests first, then expand integration or end-to-end coverage when behavior crosses boundaries.
 - Keep timing-sensitive tests deterministic with fake timers, injected clocks, or controlled hooks where possible.
