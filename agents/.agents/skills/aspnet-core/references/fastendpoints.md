@@ -4,9 +4,18 @@
 
 Use this file only when the repo already uses FastEndpoints or the task explicitly targets FastEndpoints. It is a supported programming model, not the default recommendation for every ASP.NET Core API.
 
+## Scope
+
+This file governs:
+
+- FastEndpoints repo detection and slice shape
+- endpoint, validator, mapper, and DI conventions inside FastEndpoints
+- FastEndpoints-specific testing and docs behavior
+- when to cross-load host-level ASP.NET Core references
+
 ## Mental model
 
-FastEndpoints is not “minimal APIs with different syntax.” Treat it as an endpoint-first, vertical-slice-friendly framework built around REPR:
+FastEndpoints is not "minimal APIs with different syntax." Treat it as an endpoint-first, vertical-slice-friendly framework built around REPR:
 
 - Request
 - Endpoint
@@ -19,6 +28,16 @@ The point is to keep the HTTP contract and slice-specific behavior together inst
 - [Docs](https://fast-endpoints.com/)
 - [GitHub](https://github.com/FastEndpoints/FastEndpoints)
 
+## Required pre-flight inspection
+
+Before implementation or recommendations, inspect:
+
+- `FastEndpoints` package references
+- `AddFastEndpoints()` and `UseFastEndpoints()` wiring
+- the repo's actual slice structure, validator usage, mapper usage, and DI style
+- current exception-handling path and docs generation path
+- existing FastEndpoints-specific tests when relevant
+
 ## How to recognize it in a repo
 
 Look for:
@@ -26,9 +45,9 @@ Look for:
 - `FastEndpoints` package references
 - `AddFastEndpoints()` in service registration
 - `UseFastEndpoints()` in the HTTP pipeline
-- Endpoint classes inheriting from `Endpoint<TRequest>` or `Endpoint<TRequest, TResponse>`
-- Validators inheriting from `Validator<TRequest>`
-- Slice folders that group request, response, validator, mapper, and endpoint files around one feature
+- endpoint classes inheriting from `Endpoint<TRequest>` or `Endpoint<TRequest, TResponse>`
+- validators inheriting from `Validator<TRequest>`
+- slice folders that group request, response, validator, mapper, and endpoint files around one feature
 - FastEndpoints Swagger or testing packages
 
 ## Default repo shape
@@ -46,14 +65,7 @@ Not every slice needs every piece, but the framework is at its best when the fea
 
 ## Vertical slices
 
-Assume vertical-slice architecture unless the repo clearly chose something else.
-
-That means:
-
-- organize by feature, not by controllers/services/repositories folders alone
-- keep one endpoint's HTTP contract and transport rules near each other
-- let shared domain or infrastructure services stay shared
-- do not create a fake three-layer architecture inside each slice just to satisfy a textbook
+Inspect the repo's FastEndpoints shape before making slice-architecture assumptions.
 
 Good FastEndpoints work usually looks like:
 
@@ -66,7 +78,7 @@ Good FastEndpoints work usually looks like:
 
 ## What not to force
 
-Do not “clean up” a FastEndpoints repo by turning it into controllers with service classes everywhere.
+Do not "clean up" a FastEndpoints repo by turning it into controllers with service classes everywhere.
 
 Also do not force every slice to have:
 
@@ -75,15 +87,15 @@ Also do not force every slice to have:
 - a mapper class when direct mapping is clearer
 - a generic base endpoint abstraction for no real gain
 
-If the repo already chose a richer application layer, respect it. But do not add ceremony just because you are nervous around slice-local behavior.
+If the repo already chose a richer application layer, respect it. Do not add ceremony just because slice-local behavior makes you nervous.
 
 ## Endpoint guidance
 
-- Keep HTTP-specific orchestration in the endpoint.
-- Keep request-shape validation in the validator.
-- Keep real business rules and persistence concerns in domain or application services where that separation is real.
-- Use FastEndpoints response helpers and error mechanisms consistently.
-- Avoid bloated handlers that perform transport validation, domain logic, mapping, persistence, and side effects all inline.
+- keep HTTP-specific orchestration in the endpoint
+- keep request-shape validation in the validator
+- keep real business rules and persistence concerns in domain or application services where that separation is real
+- use FastEndpoints response helpers and error mechanisms consistently
+- avoid bloated handlers that perform transport validation, domain logic, mapping, persistence, and side effects all inline
 
 The endpoint should own the slice, not become a dumping ground.
 
@@ -110,7 +122,7 @@ Use endpoint or domain/application services for:
 - database-backed uniqueness checks
 - workflow rules that depend on current state
 
-When business-rule validation fails inside the handler, use the framework's error APIs consistently, such as adding errors and failing the request through the framework path. Do not duplicate the same rule in both validator and handler.
+When business-rule validation fails inside the handler, use the framework's error APIs consistently. Do not duplicate the same rule in both validator and handler.
 
 ## Dependency injection
 
@@ -120,9 +132,8 @@ Guidance:
 
 - match the repo's existing style first
 - prefer the least surprising pattern for that codebase
-- FastEndpoints supports both property injection and constructor injection, so choose based on repo convention, not generic DI ideology
-- in new code, prefer the DI style that is already idiomatic in that codebase
-- do not rewrite a working property-injection codebase just to satisfy generic DI dogma
+- choose DI style based on repo convention, not generic DI ideology
+- do not rewrite a working property-injection codebase just to satisfy DI dogma
 - do not hide core dependencies behind service locator style unless the repo already embraces that pattern
 
 ## Exception handling
@@ -134,7 +145,7 @@ Guidance:
 - check whether the app already uses the framework's default exception handler before introducing custom middleware
 - if the repo intentionally lets exceptions flow outward for centralized handling, respect that shape
 - keep endpoint-level error responses and exception-based failures consistent with the repo's existing approach
-- do not mix ad hoc `try/catch` noise, custom envelopes, and framework error handling in the same slice unless you enjoy debugging contradictory behavior later
+- do not mix ad hoc `try/catch` noise, custom envelopes, and framework error handling in the same slice
 
 ## Configuration and grouping
 
@@ -156,9 +167,9 @@ When reviewing or changing docs:
 - confirm how document generation is wired
 - keep endpoint descriptions aligned with real request and response behavior
 - check whether custom error response or problem-details conventions already exist
-- treat Scalar as the default docs UI in this skill
-- if the project is using another docs UI, strongly recommend switching to Scalar before polishing the existing UI wiring
-- if the repo already uses FastEndpoints Swagger support, keep the document generation path but still push the UI layer toward Scalar
+- prefer Scalar only for new docs UI decisions or explicit docs UI modernization
+- if the repo already uses another docs UI, preserve it unless the current setup is broken or the task explicitly includes replacing it
+- if the repo already uses FastEndpoints Swagger support, keep the document generation path and focus on contract accuracy unless the task explicitly includes UI replacement
 
 ## Testing
 
@@ -178,7 +189,7 @@ Do not normalize FastEndpoints tests into controller-era habits if the framework
 
 If the repo uses FastEndpoints scaffolding or follows the scaffolded slice shape, preserve it. The scaffold is valuable because it reinforces the full vertical slice: endpoint, DTOs, validator, mapper, and related files.
 
-Do not flatten that structure just because it looks like “more files.” In this framework, the extra structure often carries its weight.
+Do not flatten that structure just because it looks like "more files." In this framework, the extra structure often carries its weight.
 
 ## Interoperability with ASP.NET Core
 
@@ -190,3 +201,41 @@ FastEndpoints still runs on ASP.NET Core. Normal platform rules still apply:
 - options, configuration, and hosting rules still matter
 
 If the task is really about one of those host-level concerns, cross-load the relevant ASP.NET Core reference instead of pretending FastEndpoints replaced the host framework.
+
+Cross-load requirements:
+
+- auth, authorization, cookies, bearer tokens, OIDC, CORS, CSRF, or secrets: load `auth-and-security.md`
+- OpenAPI, middleware, validation behavior, routing, or HTTP pipeline concerns: load `apis-and-http.md`
+- tests, diagnostics, performance, or async/background behavior: load `testing-performance-and-diagnostics.md`
+- public API docs, C# feature choices, or DI/runtime shape: load `csharp.md`
+
+## Required FastEndpoints audit
+
+Before finishing, review the task against this checklist:
+
+- repo-shape audit: the repo's actual FastEndpoints conventions were inspected before changing slice structure
+- slice audit: feature organization stays cohesive without forcing fake layers or repo-wide reorganization
+- validator audit: validators stay stateless and do not depend on scoped or mutable request data
+- DI audit: the chosen dependency-injection style matches repo convention
+- error-handling audit: exception and framework error paths stay consistent
+- docs audit: endpoint docs match real behavior without pushing an unrelated docs UI migration
+- test audit: slice-level tests or HTTP behavior tests were added or reviewed when observable behavior changed
+- cross-load audit: host-level concerns loaded the relevant ASP.NET Core reference instead of staying isolated inside FastEndpoints prose
+
+## Required final reporting
+
+When this file is loaded, the final response should state:
+
+- which FastEndpoints conventions were inspected
+- whether slice shape, validators, DI style, and error handling were preserved or changed
+- which host-level ASP.NET Core references were cross-loaded
+- whether docs or tests were reviewed for the slice
+
+## Scope control
+
+Do not:
+
+- assume every FastEndpoints repo wants the same slice structure without inspection
+- rewrite property injection to constructor injection, or vice versa, as a side quest
+- normalize a FastEndpoints repo into controller-era patterns just because they feel more familiar
+- push a docs UI migration unless the task explicitly includes it

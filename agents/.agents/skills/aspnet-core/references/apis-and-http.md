@@ -4,6 +4,16 @@
 
 Use this file for endpoint design, routing, middleware, validation, problem details, OpenAPI, streaming, caching, and HTTP pipeline behavior.
 
+## Scope
+
+This file governs:
+
+- endpoint style and route design
+- middleware order and HTTP pipeline behavior
+- validation and error response consistency
+- OpenAPI accuracy and API docs behavior
+- streaming, SSE, and long-lived HTTP responses
+
 ## Current source anchors
 
 - [ASP.NET Core docs](https://learn.microsoft.com/en-us/aspnet/core/)
@@ -12,11 +22,23 @@ Use this file for endpoint design, routing, middleware, validation, problem deta
 
 Key .NET 10 items worth remembering:
 
-- Minimal API validation integrates with `IProblemDetailsService`
-- `TypedResults.ServerSentEvents(...)` now supports SSE in both minimal APIs and controller-based apps
+- minimal API validation integrates with `IProblemDetailsService`
+- `TypedResults.ServerSentEvents(...)` supports SSE in both minimal APIs and controller-based apps
 - `Microsoft.AspNetCore.OpenApi` support is stronger in .NET 10 templates and services
 - `IOpenApiDocumentProvider` is available from DI in .NET 10
-- The `System.Text.Json`-based JSON Patch implementation is much faster, but JSON Patch still carries inherent security risk
+- the `System.Text.Json`-based JSON Patch implementation is faster, but JSON Patch still carries inherent security risk
+
+Apply .NET 10-specific guidance only when the inspected target framework and current docs confirm the repo is on a compatible version.
+
+## Required pre-flight inspection
+
+Before implementation or HTTP advice, inspect:
+
+- endpoint style already used by the repo
+- `Program.cs`, `Startup.cs`, route registration, and middleware order
+- validation and error response conventions
+- OpenAPI generation path and docs UI already in use
+- auth, CORS, caching, rate limiting, and streaming behavior when relevant
 
 ## API style choices
 
@@ -24,25 +46,25 @@ Key .NET 10 items worth remembering:
 
 Prefer minimal APIs when:
 
-- The app is API-first and already uses top-level route mapping
-- The endpoint surface is straightforward
-- Endpoint filters and grouped route configuration are enough
-- You want low ceremony and clear local composition
+- the app is API-first and already uses top-level route mapping
+- the endpoint surface is straightforward
+- endpoint filters and grouped route configuration are enough
+- low ceremony and clear local composition fit the repo
 
 Watch for:
 
-- Validation and error responses drifting into inconsistent custom code
-- Route modules becoming a dumping ground
-- Business logic getting stuffed into delegate bodies
+- validation and error responses drifting into inconsistent custom code
+- route modules becoming a dumping ground
+- business logic getting stuffed into delegate bodies
 
 ### Controllers
 
 Prefer controllers when:
 
-- The repo already uses controllers
-- Action filters and controller conventions are already part of the app shape
-- The team wants class-based discoverability and separation
-- The API has many related endpoints where controller organization is clearer than route groups
+- the repo already uses controllers
+- action filters and controller conventions are already part of the app shape
+- the team wants class-based discoverability and separation
+- the API has many related endpoints where controller organization is clearer than route groups
 
 Do not migrate to minimal APIs just because they are newer.
 
@@ -65,11 +87,11 @@ Order mistakes create fake bugs. If auth or CORS looks broken, inspect middlewar
 
 Prefer one coherent validation story per app.
 
-- Use built-in validation support where it fits
-- Return consistent problem details payloads
-- Keep transport validation, domain validation, and business rules distinct
-- For minimal APIs in .NET 10, align validation failures with `IProblemDetailsService`
-- Do not scatter ad hoc `BadRequest("nope")` responses everywhere
+- use built-in validation support where it fits
+- return consistent problem details payloads
+- keep transport validation, domain validation, and business rules distinct
+- for minimal APIs in .NET 10, align validation failures with `IProblemDetailsService`
+- do not scatter ad hoc `BadRequest("nope")` responses everywhere
 
 Use JSON Patch only when partial-document updates are truly needed, and document the risk. Its security concerns are part of the standard, not a bug you can wish away.
 
@@ -77,12 +99,12 @@ Use JSON Patch only when partial-document updates are truly needed, and document
 
 Prefer OpenAPI that matches real behavior:
 
-- Document auth requirements, status codes, and error payloads
-- Keep schemas honest
-- Avoid stale annotations that describe a fantasy API
-- If the app uses document providers or generation hooks, inspect them before changing endpoint metadata
-- Strongly prefer Scalar for API docs UI
-- If the project uses another docs UI, strongly recommend switching to Scalar before spending time polishing or extending the old UI setup
+- document auth requirements, status codes, and error payloads
+- keep schemas honest
+- avoid stale annotations that describe a fantasy API
+- if the app uses document providers or generation hooks, inspect them before changing endpoint metadata
+- prefer Scalar for new docs UI decisions or when the task explicitly includes docs UI modernization
+- if the repo already uses another docs UI, preserve it unless the current setup is broken or the task explicitly includes replacing it
 
 ## Streaming and long-lived responses
 
@@ -90,28 +112,60 @@ Use SSE for simple one-way event streams where WebSockets are unnecessary. In .N
 
 When dealing with streams:
 
-- Propagate `CancellationToken`
-- Flush responsibly
-- Keep payloads incremental
-- Make reconnection behavior a client concern when using SSE
+- propagate `CancellationToken`
+- flush responsibly
+- keep payloads incremental
+- make reconnection behavior a client concern when using SSE
 
 ## Built-in features worth preferring
 
-- Route groups for shared tags, policies, and prefixes
+- route groups for shared tags, policies, and prefixes
 - `TypedResults` for clearer response shapes
-- Output caching and rate limiting when the traffic model justifies them
+- output caching and rate limiting when the traffic model justifies them
 - `ProblemDetails` infrastructure instead of hand-built error envelopes
-- Built-in OpenAPI support before reaching for extra ceremony
-- Scalar as the preferred UI for exploring and presenting the OpenAPI document
+- built-in OpenAPI support before reaching for extra ceremony
+- Scalar as the preferred UI only for new setups or explicit docs UI changes
 
 ## Smells
 
-- Endpoint delegates doing orchestration, mapping, validation, and persistence all at once
-- Middleware with hidden side effects or unclear order dependencies
-- Multiple error response formats in the same API
+- endpoint delegates doing orchestration, mapping, validation, and persistence all at once
+- middleware with hidden side effects or unclear order dependencies
+- multiple error response formats in the same API
 - OpenAPI docs that promise responses the code never emits
-- Controllers and minimal APIs duplicated for the same resource surface
+- controllers and minimal APIs duplicated for the same resource surface
 
 ## FastEndpoints boundary
 
 If the repo uses FastEndpoints or the task explicitly targets it, load [FastEndpoints](fastendpoints.md). Do not mix its programming model casually into regular minimal API guidance.
+
+## Required HTTP audit
+
+Before finishing, review the task against this checklist:
+
+- endpoint-style audit: the chosen HTTP style matches the repo unless modernization was explicitly requested
+- pipeline audit: middleware order was inspected when relevant
+- validation audit: validation behavior is coherent and error payloads stay consistent
+- problem-details audit: error responses do not drift into ad hoc envelopes without a repo-level reason
+- OpenAPI audit: docs match real request, auth, status-code, and error behavior
+- docs UI audit: no docs UI migration was introduced unless the task explicitly included it or the existing setup is broken
+- streaming audit: SSE or streaming work propagates cancellation and uses incremental payload behavior where relevant
+- built-in features audit: built-in ASP.NET Core features were preferred over custom plumbing where appropriate
+
+## Required final reporting
+
+When this file is loaded, the final response should state:
+
+- endpoint style used or preserved
+- whether middleware or HTTP pipeline behavior changed
+- how validation and error response consistency were verified
+- how OpenAPI or docs behavior was verified, if relevant
+- whether streaming, caching, rate limiting, or CORS behavior was reviewed
+
+## Scope control
+
+Do not:
+
+- migrate controllers to minimal APIs, or vice versa, unless the task explicitly includes that change
+- switch docs UI tooling as a side quest
+- introduce custom error envelopes when repo conventions or built-in `ProblemDetails` already fit
+- add HTTP abstractions just to make the code look "architected"

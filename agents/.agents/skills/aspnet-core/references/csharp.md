@@ -4,11 +4,20 @@
 
 Use this file when the task involves C# in an ASP.NET Core or .NET codebase, especially for feature adoption, unfamiliar syntax, compatibility, DTO and type design, XML comments, API documentation, LINQ, dependency injection safety, or common anti-patterns. For test strategy, production diagnostics, or performance tuning, also load [Testing, Performance, and Diagnostics](testing-performance-and-diagnostics.md).
 
+## Scope
+
+This file governs:
+
+- language-feature fit and compatibility
+- type design and API documentation
+- async API shape, LINQ, DI safety, and error-handling basics
+- whether modern C# features are worth using for the current task
+
 ## Mental model
 
 This file exists to steer the agent toward good C# code, code that is readable, maintainable, correct under load, and modern without being performative. Use newer language features when they remove ceremony or clarify intent. Do not import novelty, abstraction, or low-level tricks into ordinary web code just because the compiler allows it.
 
-Treat C# 14 as the default language baseline for supported modern ASP.NET Core projects. If a codebase is still on an older language version without a hard compatibility reason, strongly recommend moving it to C# 14.
+Treat newer C# features as tools, not a mandate. Do not widen a local task into a `LangVersion` or language-style modernization unless the task explicitly includes it, the repo already trends that way, or the change materially depends on the newer feature.
 
 ## Source anchors
 
@@ -29,7 +38,14 @@ Before recommending modern C# syntax, verify:
 
 Do not casually bump `LangVersion`. Do not recommend preview features unless the repo already opted into them on purpose.
 
-If the project supports C# 14 and is not using it, the default recommendation is to switch. The burden of proof is on staying older, not on using the current language baseline.
+## Required pre-flight inspection
+
+Before implementation or recommendations, inspect:
+
+- the repo's `LangVersion`, SDK, and target framework inputs
+- whether the repo already uses the modern C# feature being considered
+- public API surface and documentation conventions when reusable types are involved
+- DI lifetimes, async patterns, and runtime constraints touched by the task
 
 ## Durable preferences
 
@@ -44,14 +60,15 @@ If the project supports C# 14 and is not using it, the default recommendation is
 ## API documentation
 
 - Treat API documentation as part of the contract, not a cleanup chore.
-- Reusable public APIs should be documented with XML comments, especially when behavior, constraints, exceptions, or usage are not obvious from the signature.
+- Audit every new or modified public type and public member before finishing.
+- Reusable public APIs should be documented with XML comments. The default is to document them, not to debate whether the signature is "obvious enough."
 - Complex or widely used internal APIs should also be documented when they would otherwise force readers to reverse-engineer intent.
 - At minimum, document what the type or member does, important parameters, return behavior, notable exceptions, and non-obvious side effects.
 - Use `<summary>` for the core contract, `<remarks>` for important extra behavior, `<param>` and `<returns>` for method contracts, and `<exception>` for failures callers are likely to encounter.
 - Use `<see cref>`, `<paramref>`, and `<inheritdoc/>` when they improve accuracy and reduce drift.
 - Use `<inheritdoc/>` when it keeps documentation honest and avoids copy-paste drift.
 - Add examples when usage is easy to misuse or not obvious from the signature.
-- Do not spam trivial members with useless comments that restate the name. Documentation should add information, not noise.
+- Do not spam trivial members with useless comments that restate the name. The main exception to the documentation rule is trivial DTO/property accessors or members fully covered by accurate surrounding type-level docs or `<inheritdoc/>`.
 
 ## Quick reference: use this instead
 
