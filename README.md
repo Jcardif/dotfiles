@@ -54,6 +54,14 @@ chmod +x install.sh
 ./install.sh
 ```
 
+Claude Code and Codex CLI are optional and are skipped by default. To install either one, pass the matching option; selected packages are also included in `stow`:
+
+```bash
+./install.sh --with-claude
+./install.sh --with-codex
+./install.sh --with-claude --with-codex
+```
+
 The installation script will:
 
 - Install required Nerd Fonts (Meslo LG, JetBrains Mono, SF Pro)
@@ -68,12 +76,12 @@ The installation script will:
 - Install Maccy clipboard manager
 - Install GitHub CLI (gh)
 - Install GitHub Copilot CLI
-- Install Codex CLI
-- Install Claude Code
+- Install Codex CLI, only when `--with-codex` is provided
+- Install Claude Code, only when `--with-claude` is provided
 - Install Aspire CLI
 - Install dotnet-ef global tool (if dotnet is installed)
 - Install Rust (via rustup)
-- Create symlinks to your home directory
+- Create symlinks to your home directory, including optional packages only when selected
 
 ### Manual Installation
 
@@ -102,7 +110,10 @@ brew install stow
 3. Use Stow to create symlinks to your home directory:
 
    ```bash
-   # Install all configurations
+   # Install default configurations
+   stow -vt ~ agents aerospace jankyborders sketchybar wezterm zsh
+
+   # Include optional Claude and Codex configurations if wanted
    stow -vt ~ agents aerospace claude codex jankyborders sketchybar wezterm zsh
    ```
 
@@ -121,12 +132,11 @@ brew install stow
    - `-t ~` = target is your home folder (where symlinks will be created)
    - `-v` = verbose output so you can see what's happening
 
-   If `~/.agents/skills` or `~/.claude/skills` already exist as regular
-   directories or files, move or remove them before running `stow` so it does
-   not fail with conflicts.
+   `claude` and `codex` are optional stow packages. Include them only if you want those agent configurations linked.
 
-   If `~/.codex/AGENTS.md` already exists as a regular file, move or remove it
-   before running `stow` so the `codex` package can create the symlink cleanly.
+   If `~/.agents/skills` or `~/.claude/skills` already exist as regular directories or files, move or remove them before running `stow` with the `agents` or `claude` packages so it does not fail with conflicts.
+
+   If `~/.codex/AGENTS.md` already exists as a regular file, move or remove it before running `stow` so the `codex` package can create the symlink cleanly.
 
 4. Restart your terminal or source the configurations:
 
@@ -150,5 +160,8 @@ stow -Dvt ~ wezterm
 stow -Dvt ~ zsh
 
 # Or uninstall all packages at once
+stow -Dvt ~ agents aerospace jankyborders sketchybar wezterm zsh
+
+# Include optional Claude and Codex packages if you installed them
 stow -Dvt ~ agents aerospace claude codex jankyborders sketchybar wezterm zsh
 ```

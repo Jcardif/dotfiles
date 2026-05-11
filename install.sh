@@ -5,6 +5,47 @@
 
 set -e  # Exit on error
 
+INSTALL_CLAUDE=false
+INSTALL_CODEX=false
+
+usage() {
+    cat <<EOF
+Usage: ./install.sh [options]
+
+Options:
+  --with-claude                 Include Claude Code installation and stow package
+  --with-codex                  Include Codex CLI installation and stow package
+  -h, --help                    Show this help message
+EOF
+}
+
+is_enabled() {
+    case "${1,,}" in
+        1|true|yes|y|on) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+for arg in "$@"; do
+    case "$arg" in
+        --with-claude)
+            INSTALL_CLAUDE=true
+            ;;
+        --with-codex)
+            INSTALL_CODEX=true
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        *)
+            echo "❌ Unknown option: $arg"
+            usage
+            exit 1
+            ;;
+    esac
+done
+
 echo "🚀 Starting dotfiles installation..."
 
 # Install fonts
@@ -81,12 +122,36 @@ echo "📦 Installing GitHub Copilot CLI..."
 brew install copilot-cli
 
 # Install Codex CLI
-echo "📦 Installing Codex CLI..."
-brew install codex
+if is_enabled "$INSTALL_CODEX"; then
+    echo "📦 Installing Codex CLI..."
+    brew install codex
+else
+    echo "⏭️  Skipping Codex CLI installation..."
+fi
 
 # Install Claude Code
-echo "📦 Installing Claude Code..."
-curl -fsSL https://claude.ai/install.sh | bash
+if is_enabled "$INSTALL_CLAUDE"; then
+    echo "📦 Installing Claude Code..."
+    curl -fsSL https://claude.ai/install.sh | bash
+else
+    echo "⏭️  Skipping Claude Code installation..."
+fi
+
+# Create the symlinks
+echo "🔗 Creating symlinks with stow..."
+stow_packages=(agents aerospace)
+
+if is_enabled "$INSTALL_CLAUDE"; then
+    stow_packages+=(claude)
+fi
+
+if is_enabled "$INSTALL_CODEX"; then
+    stow_packages+=(codex)
+fi
+
+stow_packages+=(jankyborders sketchybar wezterm zsh)
+
+stow -vt ~ "${stow_packages[@]}"
 
 # Install Aspire CLI
 echo "📦 Installing Aspire CLI..."
@@ -104,10 +169,6 @@ fi
 # Install Rust
 echo "📦 Installing Rust..."
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-
-# Create the symlinks
-echo "🔗 Creating symlinks with stow..."
-stow -vt ~ agents aerospace claude codex jankyborders sketchybar wezterm zsh
 
 echo "✅ Installation complete!"
 echo ""
