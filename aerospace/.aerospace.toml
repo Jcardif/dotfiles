@@ -74,7 +74,7 @@ inner.vertical = 8
 
 [workspace-to-monitor-force-assignment]
 1 = '^built-in retina display$'
-5 = ['DELL P2722H', '^LEN P27h-10 \(1\)$']
+5 = ['DELL P2722H', '^LEN P27h-10 \(1\)$', '^HP E27d G4']
 6 = ['^LEN P27h-10$', '^LEN P27h-10 \(2\)$']
 
 # 'main' binding mode declaration

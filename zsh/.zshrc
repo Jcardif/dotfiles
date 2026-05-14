@@ -45,22 +45,12 @@ alias lta1="eza -lTag --level=1 --icons"
 alias lta2="eza -lTag --level=2 --icons"
 alias lta3="eza -lTag --level=3 --icons"
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/opt/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/opt/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/opt/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
 # Added by get-aspire-cli.sh
 export PATH="$HOME/.aspire/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 eval "$(/opt/homebrew/bin/brew shellenv)"
 export GPG_TTY=$(tty)
+export PATH="/opt/homebrew/opt/python@3.13/bin:$PATH"
+
+# Created by `pipx` on 2026-05-11 13:58:51
+export PATH="$PATH:/Users/joshn/Library/Python/3.13/bin"
