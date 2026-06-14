@@ -97,11 +97,6 @@ fi
 echo "📦 Installing aerospace..."
 brew install --cask nikitabobko/tap/aerospace
 
-# Install Sketchy bar
-echo "📦 Installing sketchybar..."
-brew tap FelixKratz/formulae
-brew install sketchybar
-
 # Install janky borders
 echo "📦 Installing janky borders..."
 brew install borders
