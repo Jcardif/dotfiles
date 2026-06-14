@@ -141,7 +141,7 @@ if is_enabled "$INSTALL_CODEX"; then
     stow_packages+=(codex)
 fi
 
-stow_packages+=(jankyborders sketchybar wezterm zsh)
+stow_packages+=(jankyborders wezterm zsh)
 
 stow -vt ~ "${stow_packages[@]}"
 
