@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-# Update the front_app item with the name of the focused application
-if [ "$SENDER" = "front_app_switched" ] && [ ! -z "$INFO" ]; then
-  sketchybar --set "$NAME" \
-    label="$INFO"
-fi

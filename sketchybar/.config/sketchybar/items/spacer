@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-# Simple spacer used to separate brackets
-sketchybar --add item bracket_spacer left \
-  --set bracket_spacer \
-    width=20 \
-    background.drawing=off
