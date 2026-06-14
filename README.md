@@ -111,10 +111,10 @@ brew install stow
 
    ```bash
    # Install default configurations
-   stow -vt ~ agents aerospace jankyborders sketchybar wezterm zsh
+   stow -vt ~ agents aerospace jankyborders wezterm zsh
 
    # Include optional Claude and Codex configurations if wanted
-   stow -vt ~ agents aerospace claude codex jankyborders sketchybar wezterm zsh
+   stow -vt ~ agents aerospace claude codex jankyborders wezterm zsh
    ```
 
    ```bash
@@ -124,7 +124,6 @@ brew install stow
    stow -vt ~ claude
    stow -vt ~ codex
    stow -vt ~ jankyborders
-   stow -vt ~ sketchybar
    stow -vt ~ wezterm
    stow -vt ~ zsh
    ```
@@ -155,13 +154,12 @@ stow -Dvt ~ agents
 stow -Dvt ~ claude
 stow -Dvt ~ codex
 stow -Dvt ~ jankyborders
-stow -Dvt ~ sketchybar
 stow -Dvt ~ wezterm
 stow -Dvt ~ zsh
 
 # Or uninstall all packages at once
-stow -Dvt ~ agents aerospace jankyborders sketchybar wezterm zsh
+stow -Dvt ~ agents aerospace jankyborders wezterm zsh
 
 # Include optional Claude and Codex packages if you installed them
-stow -Dvt ~ agents aerospace claude codex jankyborders sketchybar wezterm zsh
+stow -Dvt ~ agents aerospace claude codex jankyborders wezterm zsh
 ```
