@@ -49,6 +49,8 @@ You MUST call `ctx7 library` first to obtain a valid library ID UNLESS the user 
 
 IMPORTANT: Do not run these commands more than 3 times per question. If you cannot find what you need after 3 attempts, use the best result you have.
 
+Run Context7 CLI requests outside Codex's default sandbox. If a Context7 CLI command fails with DNS or network errors such as ENOTFOUND, host resolution failures, or fetch failed, rerun it outside the sandbox instead of retrying inside the sandbox.
+
 ## Step 1: Resolve a Library
 
 Resolves a package/product name to a Context7-compatible library ID and returns matching libraries.
