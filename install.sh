@@ -131,7 +131,7 @@ fi
 
 # Create the symlinks
 echo "🔗 Creating symlinks with stow..."
-stow_packages=(agents aerospace)
+stow_packages=(aerospace)
 
 if is_enabled "$INSTALL_CLAUDE"; then
     stow_packages+=(claude)

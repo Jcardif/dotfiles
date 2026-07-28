@@ -7,10 +7,10 @@ Personal configuration files for my development environment.
 This repository contains configuration files for:
 
 - **Codex** - Shared agent instructions installed to `~/.codex/AGENTS.md`
-- **Agents** - Shared agent skills installed to `~/.agents/skills`
+- **Agent skills** - Installed to `~/.agents/skills` by `install-skills.sh`, not stored in this repository
 - **WezTerm** – Terminal emulator configuration
 - **Zsh** – Shell configuration and customizations
-- **Claude Code** - Shared agent skills installed to `~/.claude/skills`
+- **Claude Code** - Skills folder linked to `~/.agents/skills`
 - **Aerospace** – Window manager workspace definitions
 - **SketchyBar** – macOS status bar, items, and themes
 - **JankyBorders** – Window border styling via borders.app
@@ -20,15 +20,13 @@ This repository contains configuration files for:
 
 ```text
 dotfiles/
-├── agents/
-│   └── .agents/skills/                    # Shared agent skills
 ├── aerospace/
 │   └── .aerospace.toml                     # Aerospace workspace configuration
 ├── claude/
-│   └── .claude/skills -> ../../agents/.agents/skills
-│                                          # Claude Code shares the same skills
+│   └── .claude/skills -> ~/.agents/skills  # Claude Code reads the shared skills
 ├── codex/
 │   └── .codex/AGENTS.md                    # Shared Codex agent instructions
+├── install-skills.sh                       # Optional. Installs the shared skills
 ├── jankyborders/
 │   └── .config/borders/bordersrc           # Borders.app theme
 ├── sketchybar/
@@ -83,6 +81,25 @@ The installation script will:
 - Install Rust (via rustup)
 - Create symlinks to your home directory, including optional packages only when selected
 
+### Agent skills (optional)
+
+The shared agent skills are not stored in this repository. `install-skills.sh` downloads them with the `skills` CLI, and puts them in `~/.agents/skills`. It then links the Claude Code and Codex skill folders to that one directory.
+
+`install.sh` does not call this script. Run it by hand:
+
+```bash
+chmod +x install-skills.sh
+./install-skills.sh
+```
+
+To add one more skill later, call the CLI directly:
+
+```bash
+npx skills add https://github.com/mattpocock/skills --skill wayfinder
+```
+
+The script does not replace `~/.claude/skills` or `~/.codex/skills` when either one is a real directory. Move the directory first, then run the script again.
+
 ### Manual Installation
 
 If you prefer to install components manually:
@@ -111,15 +128,14 @@ brew install stow
 
    ```bash
    # Install default configurations
-   stow -vt ~ agents aerospace jankyborders wezterm zsh
+   stow -vt ~ aerospace jankyborders wezterm zsh
 
    # Include optional Claude and Codex configurations if wanted
-   stow -vt ~ agents aerospace claude codex jankyborders wezterm zsh
+   stow -vt ~ aerospace claude codex jankyborders wezterm zsh
    ```
 
    ```bash
    # Or install specific configurations
-   stow -vt ~ agents
    stow -vt ~ aerospace
    stow -vt ~ claude
    stow -vt ~ codex
@@ -133,7 +149,7 @@ brew install stow
 
    `claude` and `codex` are optional stow packages. Include them only if you want those agent configurations linked.
 
-   If `~/.agents/skills` or `~/.claude/skills` already exist as regular directories or files, move or remove them before running `stow` with the `agents` or `claude` packages so it does not fail with conflicts.
+   If `~/.claude/skills` already exists as a regular directory or file, move or remove it before running `stow` with the `claude` package so it does not fail with conflicts.
 
    If `~/.codex/AGENTS.md` already exists as a regular file, move or remove it before running `stow` so the `codex` package can create the symlink cleanly.
 
@@ -150,7 +166,6 @@ To remove symlinks created by Stow:
 ```bash
 cd /path/to/dotfiles
 stow -Dvt ~ aerospace
-stow -Dvt ~ agents
 stow -Dvt ~ claude
 stow -Dvt ~ codex
 stow -Dvt ~ jankyborders
@@ -158,8 +173,8 @@ stow -Dvt ~ wezterm
 stow -Dvt ~ zsh
 
 # Or uninstall all packages at once
-stow -Dvt ~ agents aerospace jankyborders wezterm zsh
+stow -Dvt ~ aerospace jankyborders wezterm zsh
 
 # Include optional Claude and Codex packages if you installed them
-stow -Dvt ~ agents aerospace claude codex jankyborders wezterm zsh
+stow -Dvt ~ aerospace claude codex jankyborders wezterm zsh
 ```
